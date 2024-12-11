@@ -8,7 +8,6 @@ import {
 import { release, upload, GitHubReleaser } from "./github";
 import { getOctokit } from "@actions/github";
 import { setFailed, setOutput } from "@actions/core";
-import { GitHub, getOctokitOptions } from "@actions/github/lib/utils";
 
 import { env } from "process";
 
@@ -46,7 +45,7 @@ async function run() {
       throttle: {
         onRateLimit: (retryAfter, options) => {
           console.warn(
-            `Request quota exhausted for request ${options.method} ${options.url}`
+            `Request quota exhausted for request ${options.method} ${options.url}`,
           );
           if (options.request.retryCount === 0) {
             // only retries once
@@ -57,7 +56,7 @@ async function run() {
         onAbuseLimit: (retryAfter, options) => {
           // does not retry, only logs a warning
           console.warn(
-            `Abuse detected for request ${options.method} ${options.url}`
+            `Abuse detected for request ${options.method} ${options.url}`,
           );
         },
       },
@@ -81,11 +80,11 @@ async function run() {
             gh,
             uploadUrl(rel.upload_url),
             path,
-            currentAssets
+            currentAssets,
           );
           delete json.uploader;
           return json;
-        })
+        }),
       ).catch((error) => {
         throw error;
       });
